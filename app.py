@@ -130,7 +130,7 @@ if st.sidebar.button("Logout"):
     st.session_state.logged_in = False
 
     st.rerun()
-GEMINI_API_KEY = "AQ.Ab8RN6KWbt0tJginb-abo0-Emi54gAzggrYAyJIAPDjm1d8rEQ"
+GEMINI_API_KEY = "AQ.Ab8RN6KEINEUJT0smRh-lqEN5gHNjGtJi3C-gD9Bauekrhc-Cw"
 
 genai.configure(api_key=GEMINI_API_KEY)
 
