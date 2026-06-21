@@ -159,5 +159,4 @@ genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
 - Renewable Energy Suggestions
 
 - ## Thank you 
-- CO₂ Emission Calculator
-- Email Reports
+
