@@ -131,7 +131,23 @@ if st.sidebar.button("Logout"):
 
     st.rerun()
 GEMINI_API_KEY = "AQ.Ab8RN6KEINEUJT0smRh-lqEN5gHNjGtJi3C-gD9Bauekrhc-Cw"
+# ---------------- AI Energy Agent ----------------
 
+def energy_agent(appliance, current_units, monthly_cost):
+
+    if current_units >= 300:
+        status = "High Usage"
+        action = "Recommend immediate power-saving measures."
+
+    elif current_units >= 150:
+        status = "Moderate Usage"
+        action = "Suggest optimization of appliance usage."
+
+    else:
+        status = "Low Usage"
+        action = "Encourage maintaining efficient energy habits."
+
+    return status, action
 genai.configure(api_key=GEMINI_API_KEY)
 
 model = genai.GenerativeModel("gemini-2.5-flash")
@@ -189,6 +205,11 @@ current = st.number_input(
 
 difference = current - previous
 
+usage_status, agent_action = energy_agent(
+    appliance,
+    current,
+    cost
+)
 if difference > 0:
     st.warning(
         f"Your usage increased by {difference} units."
@@ -209,6 +230,13 @@ elif difference < 0:
 
 else:
     st.info("Usage remains the same.")
+# ---------------- Agentic AI Display ----------------
+
+st.header("🤖 Agentic AI Analysis")
+
+st.success(f"Usage Status: {usage_status}")
+
+st.info(f"Agent Decision: {agent_action}")
 score = max(0, 100 - int(current/5))
 
 st.header("🏆 Energy Efficiency Score")
@@ -243,23 +271,36 @@ st.bar_chart(
     chart_data.set_index("Month")
 )
 tips = pd.read_csv("energy_tips.csv")
+# RAG Retrieval
 
-tip = tips[
-    tips["Appliance"] == appliance
-]["Tip"].values[0]
+filtered = tips[tips["Appliance"] == appliance]
+
+if not filtered.empty:
+    retrieved_tip = filtered["Tip"].iloc[0]
+else:
+    retrieved_tip = "Use energy efficiently."
+
 st.header("🤖 WattWise AI Assistant")
 
 if st.button("Generate AI Suggestions"):
-
     prompt = f"""
+    You are an Energy Saving Expert.
+    Knowledge Base:
+    {retrieved_tip}
+    User Details:
     Appliance: {appliance}
-    Watts: {watts}
-    Hours Used Per Day: {hours}
+    Power: {watts} W
+    Hours Used: {hours}
     Monthly Units: {monthly_units}
     Monthly Cost: ₹{cost}
     Current Bill Units: {current}
 
-    Give personalized electricity saving tips.
+    Use the knowledge base while answering.
+
+    Generate:
+    1. Personalized Suggestions
+    2. Ways to Reduce Bill
+    3. Estimated Savings
     Explain how to reduce electricity bill.
     """
 
