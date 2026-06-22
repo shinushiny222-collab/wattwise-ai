@@ -130,7 +130,7 @@ if st.sidebar.button("Logout"):
     st.session_state.logged_in = False
 
     st.rerun()
-GEMINI_API_KEY = "AQ.Ab8RN6KEINEUJT0smRh-lqEN5gHNjGtJi3C-gD9Bauekrhc-Cw"
+GEMINI_API_KEY = "AQ.Ab8RN6IVkiYPrIuxqgFsuh2ENYQajCjEXuwW3G3IMn9g-W8bbg"
 # ---------------- AI Energy Agent ----------------
 
 def energy_agent(appliance, current_units, monthly_cost):
